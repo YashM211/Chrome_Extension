@@ -1,7 +1,21 @@
 const bookMarkImgURL = chrome.runtime.getURL("assets/bookmark.png")
 window.addEventListener("load",addBookMarkButton);
 const AZ_PROBLEM_KEY = "AZ_PROBLEM_KEY";
+
+const observer = new MutationObserver(()=>{
+    addBookMarkButton();
+});
+
+observer.observe(document.body,{childList:true,subtree:true});
+addBookMarkButton();
+
+function onProblemPage(){
+    return window.location.pathname.startsWith('/problems/');
+}
 function addBookMarkButton(){
+
+    if(!onProblemPage() || document.getElementById("add-bookmark-button")) return;
+
     const bookMarkButton = document.createElement('img');
     bookMarkButton.id = "add-bookmark-button";
     bookMarkButton.src = bookMarkImgURL;
